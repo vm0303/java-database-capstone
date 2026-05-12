@@ -1,4 +1,4 @@
-# Healthcare Appointment Portal - User Stories
+# Smart Clinic Managemenrt System - User Stories
 
 ## User Story Template
 
