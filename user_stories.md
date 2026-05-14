@@ -168,13 +168,17 @@ Medium
 ### User Story: Patient Registration
 
 #### Title
-_As a patient, I want to sign up using my email and password, so that I can book appointments._
+_As a patient, I want to sign up with my personal information, email, and password, so that I can book and manage appointments._
 
 #### Acceptance Criteria
 1. Patient can access a registration form from the portal homepage.
-2. System validates email format and password strength requirements.
-3. Duplicate email registrations are prevented.
-4. Patient receives confirmation after successful signup.
+2. Patient must enter name, email, password, phone number, and address.
+3. System validates that the name is between 3 and 100 characters.
+4. System validates that the email follows a valid email format.
+5. System validates that the password is at least 6 characters long.
+6. System validates that the phone number contains exactly 10 digits.
+7. System validates that the address does not exceed 255 characters.
+8. Patient receives confirmation after successful signup.
 
 #### Priority
 High
@@ -183,8 +187,9 @@ High
 5
 
 #### Notes
-- Include optional email verification functionality.
-- Passwords must be securely hashed before storage.
+- Password should be hidden from JSON responses using write-only access.
+- Email should be unique if patients use it to log in.
+- Passwords should be securely handled before production use.
 
 ---
 
