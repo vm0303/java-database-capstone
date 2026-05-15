@@ -1,104 +1,104 @@
 <!-- index.html -->
-<!-- 
+<!-- adminDashboard.html -->
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 
-Step-by-Step Explanation of `index.html`.
-This file allows users to select a role (Admin, Patient, Doctor) 
-and triggers modal-based login functionality.
+<head>
+    <meta charset="UTF-8">
 
-1. Label the File
+    <title>Admin Dashboard</title>
 
-   * Add a comment at the very top to identify the file as `index.html`. This helps developers stay organized.
+    <link rel="icon" type="image/png"
+          th:href="@{/assets/images/logo/logo.png}" />
 
-2. Declare Document Type
+    <link rel="stylesheet"
+          th:href="@{/assets/css/adminDashboard.css}">
 
-   * Use the declaration for HTML5 so browsers know how to render the page correctly.
+    <link rel="stylesheet"
+          th:href="@{/assets/css/style.css}">
 
-3. Start the HTML Document
+    <!-- Utility and Rendering Scripts -->
+    <script th:src="@{/js/render.js}" defer></script>
+    <script th:src="@{/js/util.js}" defer></script>
 
-   * Begin the HTML structure and set the document language to English to improve accessibility and SEO `lang="en"`.
+    <!-- Layout Components -->
+    <script th:src="@{/js/components/header.js}" defer></script>
+    <script th:src="@{/js/components/footer.js}" defer></script>
+</head>
 
-4. Head Section (Metadata and Resources)
+<body>
 
-   * Open the `<head>` section which contains settings and links that don’t show up visually.
+<div class="container">
 
-5. Set Character Encoding
+    <div class="wrapper">
 
-   * Specify UTF-8 encoding to support most global characters and symbols.
+        <!-- Dynamic Header -->
+        <div id="header"></div>
 
-6. Set the Page Title
+        <!-- Main Dashboard Content -->
+        <main class="main-content">
 
-   * Give the page a name (e.g., "Select Role") that appears on the browser tab.
+            <!-- Search Bar -->
+            <input
+                    type="text"
+                    id="searchBar"
+                    placeholder="Search by doctor name"
+            />
 
-7. Add a Favicon
+            <!-- Filter Section -->
+            <div class="filter-section">
 
-   * Link to an icon (like a logo) that will appear in the browser tab from the address `href="../assets/images/logo/Logo.png"`
+                <!-- Sort By Time -->
+                <select id="timeFilter">
+                    <option value="">Sort By Time</option>
+                    <option value="morning">Morning</option>
+                    <option value="afternoon">Afternoon</option>
+                    <option value="evening">Evening</option>
+                </select>
 
-8. Link Stylesheets
+                <!-- Filter By Specialty -->
+                <select id="specialtyFilter">
+                    <option value="">Filter By Specialty</option>
+                    <option value="Cardiology">Cardiology</option>
+                    <option value="Dermatology">Dermatology</option>
+                    <option value="Neurology">Neurology</option>
+                    <option value="Pediatrics">Pediatrics</option>
+                </select>
 
-   * Add a page-specific stylesheet for layout and design.
-   * Also include a global stylesheet for shared site-wide styles.
+            </div>
 
-   HINT:
-      `<link rel="stylesheet" href="../assets/css/index.css">`
-      `<link rel="stylesheet" href="../assets/css/style.css">`
+            <!-- Dynamic Doctor Content -->
+            <div id="content"></div>
 
-9. Add JavaScript Files with `defer`
+        </main>
 
-   * Link utility and rendering JavaScript files (e.g., `util.js`, `render.js`).
-   * Include scripts for rendering components like header and footer.
-   * Use the `defer` attribute so they load after the HTML is parsed.
+        <!-- Dynamic Footer -->
+        <div id="footer"></div>
 
-   HINT:
-      `<script src="../js/util.js" defer></script>`
-      `<script src="../js/render.js" defer></script>`
-      `<script src="../js/components/header.js" defer></script>`
-      `<script src="../js/components/footer.js" defer></script>`
-      
-10. Close the Head and Open the Body
+    </div>
 
-    * Wrap up metadata and begin the visible page content.
+</div>
 
-11. Create a Container
+<!-- Modal -->
+<div id="modal" class="modal hidden">
 
-    * Add a main container to hold all page elements and apply layout constraints.
+    <span id="closeModal" class="close">
+        &times;
+    </span>
 
-12. Use a Wrapper for Structure
+    <div id="modal-body"></div>
 
-    * Inside the container, add a wrapper to group header, main, and footer sections logically.
+</div>
 
-13. Insert a Header Placeholder
+<!-- Page Scripts -->
+<script type="module"
+        src="../js/services/adminDashboard.js"
+        defer></script>
 
-    * Add a `div` that will be dynamically filled by JavaScript with the site’s header.
+<script type="module"
+        src="../js/components/doctorCard.js"
+        defer></script>
 
-14. Define the Main Section
+</body>
+</html>
 
-    * Use a semantic `<main>` tag to hold the central content of the page.
-
-15. Add a Heading for Role Selection
-
-    * Display a heading like “Select Your Role” to instruct users.
-
-16. Add Buttons for Roles
-
-    * Create buttons for each role: Admin, Patient, and Doctor.
-    * Assign unique identifiers or `onclick` handlers to them as needed.
-
-17. Insert a Footer Placeholder
-
-    * Add a `div` that will be dynamically filled by JavaScript with the site’s footer.
-
-18. Create a Modal Structure
-
-    * Add a modal overlay for popups (like login forms).
-    * Include a close button and an inner container for dynamic content.
-
-19. Load Page-Specific Logic Module
-
-    * Use a `<script type="module">` tag to load the role selection logic (e.g., `index.js`).
-    * Ensure it’s deferred so it doesn’t block HTML rendering.
-
-20. Close the Body and HTML Tags
-
-    * Properly close all opened tags to complete the document structure.
-
- -->
