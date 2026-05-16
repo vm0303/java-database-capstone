@@ -1,6 +1,6 @@
 package com.project.back_end.repo;
 
-public interface AppointmentRepository  {
+public interface AppointmentRepository extends JpaRepository <Appointment, Long>  {
 
    // 1. Extend JpaRepository:
 //    - The repository extends JpaRepository<Appointment, Long>, which gives it basic CRUD functionality.
