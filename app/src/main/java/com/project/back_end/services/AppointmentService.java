@@ -1,5 +1,6 @@
 package com.project.back_end.services;
 
+@Service
 public class AppointmentService {
 // 1. **Add @Service Annotation**:
 //    - To indicate that this class is a service layer class for handling business logic.
@@ -10,6 +11,7 @@ public class AppointmentService {
 //    - The `AppointmentService` class requires several dependencies like `AppointmentRepository`, `Service`, `TokenService`, `PatientRepository`, and `DoctorRepository`.
 //    - These dependencies should be injected through the constructor.
 //    - Instruction: Ensure constructor injection is used for proper dependency management in Spring.
+
 
 // 3. **Add @Transactional Annotation for Methods that Modify Database**:
 //    - The methods that modify or update the database should be annotated with `@Transactional` to ensure atomicity and consistency of the operations.
