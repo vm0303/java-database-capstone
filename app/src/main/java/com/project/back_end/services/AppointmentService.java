@@ -15,12 +15,16 @@ import java.util.*;
 
 @Service
 public class AppointmentService {
-
+    @Autowired
     private final AppointmentRepository appointmentRepository;
+    @Autowired
     private final PatientRepository patientRepository;
+    @Autowired
     private final DoctorRepository doctorRepository;
+    @Autowired
     private final TokenService tokenService;
-    private final Service service;
+    @Autowired
+    private final com.project.back_end.services.Service service;
 
     public AppointmentService(
             AppointmentRepository appointmentRepository,
@@ -82,7 +86,7 @@ public class AppointmentService {
 
         Appointment appointment = appointmentOptional.get();
 
-        Long patientId = tokenService.extractPatientId(token);
+        Long patientId = tokenService.getIdFromToken(token);
 
         if (!appointment.getPatient().getId().equals(patientId)) {
             response.put("message", "You are not allowed to cancel this appointment.");
@@ -99,7 +103,7 @@ public class AppointmentService {
     public Map<String, Object> getAppointment(String pname, LocalDate date, String token) {
         Map<String, Object> response = new HashMap<>();
 
-        Long doctorId = tokenService.extractDoctorId(token);
+        Long doctorId = tokenService.getIdFromToken(token);
 
         LocalDateTime start = date.atStartOfDay();
         LocalDateTime end = date.plusDays(1).atStartOfDay();
