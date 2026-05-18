@@ -49,6 +49,12 @@ public class AppointmentDTO {
         this.patientAddress = patientAddress;
         this.appointmentTime = appointmentTime;
         this.status = status;
+
+        if (appointmentTime != null) {
+            this.appointmentDate = appointmentTime.toLocalDate();
+            this.appointmentTimeOnly = appointmentTime.toLocalTime();
+            this.endTime = appointmentTime.plusHours(1);
+        }
     }
 
     public Long getId() {

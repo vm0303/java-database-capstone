@@ -63,7 +63,7 @@ export function showBookingOverlay(e, doctor, patient) {
     const date = modalApp.querySelector("#appointment-date").value;
     const time = modalApp.querySelector("#appointment-time").value;
     const token = localStorage.getItem("token");
-    const startTime = time.split('-')[0];
+    const startTime = time.split('-')[0].trim();
     const appointment = {
       doctor: { id: doctor.id },
       patient: { id: patient.id },

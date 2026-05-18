@@ -1,9 +1,9 @@
 // patientDashboard.js
 
-import { createDoctorCard } from "../components/doctorCard.js";
-import { openModal } from "../components/modals.js";
-import { getDoctors, filterDoctors } from "../services/doctorServices.js";
-import { patientSignup, patientLogin } from "../services/patientServices.js";
+import { createDoctorCard } from "./components/doctorCard.js";
+import { openModal } from "./components/modals.js";
+import { getDoctors, filterDoctors } from "./services/doctorServices.js";
+import { patientSignup, patientLogin } from "./services/patientServices.js";
 
 document.addEventListener("DOMContentLoaded", function () {
     loadDoctorCards();

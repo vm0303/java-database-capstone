@@ -21,18 +21,15 @@ public class PatientController {
 
     public PatientController(
             PatientService patientService,
-            Service service
-    ) {
+            Service service) {
         this.patientService = patientService;
         this.service = service;
     }
 
     @GetMapping("/{token}")
     public ResponseEntity<Map<String, Object>> getPatient(
-            @PathVariable String token
-    ) {
-        ResponseEntity<Map<String, String>> tokenResponse =
-                service.validateToken(token, "patient");
+            @PathVariable String token) {
+        ResponseEntity<Map<String, String>> tokenResponse = service.validateToken(token, "patient");
 
         if (!tokenResponse.getStatusCode().is2xxSuccessful()) {
             Map<String, Object> response = new HashMap<>();
@@ -45,8 +42,7 @@ public class PatientController {
 
     @PostMapping
     public ResponseEntity<Map<String, String>> createPatient(
-            @Valid @RequestBody Patient patient
-    ) {
+            @Valid @RequestBody Patient patient) {
         Map<String, String> response = new HashMap<>();
 
         boolean validPatient = service.validatePatient(patient);
@@ -69,23 +65,25 @@ public class PatientController {
 
     @PostMapping("/login")
     public ResponseEntity<Map<String, String>> login(
-            @RequestBody Login login
-    ) {
+            @RequestBody Login login) {
         return service.validatePatientLogin(login);
     }
 
-    @GetMapping("/{id}/{token}")
+    @GetMapping("/{id}/{user}/{token}")
     public ResponseEntity<Map<String, Object>> getPatientAppointment(
             @PathVariable Long id,
-            @PathVariable String token
-    ) {
-        ResponseEntity<Map<String, String>> tokenResponse =
-                service.validateToken(token, "patient");
+            @PathVariable String user,
+            @PathVariable String token) {
 
-        if (!tokenResponse.getStatusCode().is2xxSuccessful()) {
+        ResponseEntity<Map<String, String>> validation = service.validateToken(token, user);
+
+        if (!validation.getStatusCode().is2xxSuccessful()) {
             Map<String, Object> response = new HashMap<>();
-            response.put("message", tokenResponse.getBody().get("message"));
-            return ResponseEntity.status(tokenResponse.getStatusCode()).body(response);
+            response.put("message", validation.getBody().get("message"));
+
+            return ResponseEntity
+                    .status(validation.getStatusCode())
+                    .body(response);
         }
 
         return patientService.getPatientAppointment(id, token);
@@ -95,10 +93,8 @@ public class PatientController {
     public ResponseEntity<Map<String, Object>> filterPatientAppointment(
             @PathVariable String condition,
             @PathVariable String name,
-            @PathVariable String token
-    ) {
-        ResponseEntity<Map<String, String>> tokenResponse =
-                service.validateToken(token, "patient");
+            @PathVariable String token) {
+        ResponseEntity<Map<String, String>> tokenResponse = service.validateToken(token, "patient");
 
         if (!tokenResponse.getStatusCode().is2xxSuccessful()) {
             Map<String, Object> response = new HashMap<>();

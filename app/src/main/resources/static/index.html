@@ -1,104 +1,46 @@
 <!-- index.html -->
-<!-- adminDashboard.html -->
+<!-- index.html -->
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
-
+<html lang="en">
 <head>
     <meta charset="UTF-8">
+    <title>Smart Clinic</title>
 
-    <title>Admin Dashboard</title>
+    <link rel="icon" href="./assets/images/logo/Logo.png" />
 
-    <link rel="icon" type="image/png"
-          th:href="@{/assets/images/logo/logo.png}" />
+    <link rel="stylesheet" href="./assets/css/index.css">
+    <link rel="stylesheet" href="./assets/css/style.css">
 
-    <link rel="stylesheet"
-          th:href="@{/assets/css/adminDashboard.css}">
-
-    <link rel="stylesheet"
-          th:href="@{/assets/css/style.css}">
-
-    <!-- Utility and Rendering Scripts -->
-    <script th:src="@{/js/render.js}" defer></script>
-    <script th:src="@{/js/util.js}" defer></script>
-
-    <!-- Layout Components -->
-    <script th:src="@{/js/components/header.js}" defer></script>
-    <script th:src="@{/js/components/footer.js}" defer></script>
+    <script src="./js/util.js" defer></script>
+    <script src="./js/render.js" defer></script>
+    <script src="./js/components/header.js" defer></script>
+    <script src="./js/components/footer.js" defer></script>
 </head>
 
 <body>
-
 <div class="container">
-
     <div class="wrapper">
 
-        <!-- Dynamic Header -->
         <div id="header"></div>
 
-        <!-- Main Dashboard Content -->
         <main class="main-content">
+            <h2>Select Your Role</h2>
 
-            <!-- Search Bar -->
-            <input
-                    type="text"
-                    id="searchBar"
-                    placeholder="Search by doctor name"
-            />
+            <button id="adminBtn" onclick="selectRole('admin')">Admin</button>
+            <button id="doctorBtn" onclick="selectRole('doctor')">Doctor</button>
+            <button id="patientBtn" onclick="selectRole('patient')">Patient</button>
 
-            <!-- Filter Section -->
-            <div class="filter-section">
-
-                <!-- Sort By Time -->
-                <select id="timeFilter">
-                    <option value="">Sort By Time</option>
-                    <option value="morning">Morning</option>
-                    <option value="afternoon">Afternoon</option>
-                    <option value="evening">Evening</option>
-                </select>
-
-                <!-- Filter By Specialty -->
-                <select id="specialtyFilter">
-                    <option value="">Filter By Specialty</option>
-                    <option value="Cardiology">Cardiology</option>
-                    <option value="Dermatology">Dermatology</option>
-                    <option value="Neurology">Neurology</option>
-                    <option value="Pediatrics">Pediatrics</option>
-                </select>
-
+            <div id="modal" class="modal hidden">
+                <button id="closeModal">X</button>
+                <div id="modal-body"></div>
             </div>
-
-            <!-- Dynamic Doctor Content -->
-            <div id="content"></div>
-
         </main>
 
-        <!-- Dynamic Footer -->
         <div id="footer"></div>
 
     </div>
-
 </div>
 
-<!-- Modal -->
-<div id="modal" class="modal hidden">
-
-    <span id="closeModal" class="close">
-        &times;
-    </span>
-
-    <div id="modal-body"></div>
-
-</div>
-
-<!-- Page Scripts -->
-<script type="module"
-        src="../js/services/adminDashboard.js"
-        defer></script>
-
-<script type="module"
-        src="../js/components/doctorCard.js"
-        defer></script>
-
+<script type="module" src="./js/services/index.js"></script>
 </body>
 </html>
-

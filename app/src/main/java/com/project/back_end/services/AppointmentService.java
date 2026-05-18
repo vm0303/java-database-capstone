@@ -51,9 +51,11 @@ public class AppointmentService {
 
     @Transactional
     public ResponseEntity<Map<String, String>> updateAppointment(Appointment appointment) {
+
         Map<String, String> response = new HashMap<>();
 
-        Optional<Appointment> existingAppointment = appointmentRepository.findById(appointment.getId());
+        Optional<Appointment> existingAppointment =
+                appointmentRepository.findById(appointment.getId());
 
         if (existingAppointment.isEmpty()) {
             response.put("message", "Appointment not found.");
@@ -75,45 +77,24 @@ public class AppointmentService {
         appointmentRepository.save(appointment);
 
         response.put("message", "Appointment updated successfully.");
-        return ResponseEntity.ok(response);
-    }
 
-    @Transactional
-    public ResponseEntity<Map<String, String>> cancelAppointment(long id, String token) {
-        Map<String, String> response = new HashMap<>();
-
-        Optional<Appointment> appointmentOptional = appointmentRepository.findById(id);
-
-        if (appointmentOptional.isEmpty()) {
-            response.put("message", "Appointment not found.");
-            return ResponseEntity.badRequest().body(response);
-        }
-
-        Appointment appointment = appointmentOptional.get();
-
-        Long patientId = tokenService.getIdFromToken(token);
-
-        if (!appointment.getPatient().getId().equals(patientId)) {
-            response.put("message", "You are not allowed to cancel this appointment.");
-            return ResponseEntity.status(403).body(response);
-        }
-
-        appointmentRepository.delete(appointment);
-
-        response.put("message", "Appointment cancelled successfully.");
         return ResponseEntity.ok(response);
     }
 
     @Transactional
     public String changeStatus(Long appointmentId, int status) {
-        Optional<Appointment> appointmentOptional = appointmentRepository.findById(appointmentId);
+
+        Optional<Appointment> appointmentOptional =
+                appointmentRepository.findById(appointmentId);
 
         if (appointmentOptional.isEmpty()) {
             return "Appointment not found.";
         }
 
         Appointment appointment = appointmentOptional.get();
+
         appointment.setStatus(status);
+
         appointmentRepository.save(appointment);
 
         return "Appointment status updated successfully.";

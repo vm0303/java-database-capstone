@@ -7,13 +7,13 @@ const PATIENT_API = API_BASE_URL + '/patient'
 export async function patientSignup(data) {
   try {
     const response = await fetch(`${PATIENT_API}`,
-      {
-        method: "POST",
-        headers: {
-          "Content-type": "application/json"
-        },
-        body: JSON.stringify(data)
-      }
+        {
+          method: "POST",
+          headers: {
+            "Content-type": "application/json"
+          },
+          body: JSON.stringify(data)
+        }
     );
     const result = await response.json();
     if (!response.ok) {
@@ -46,7 +46,11 @@ export async function getPatientData(token) {
   try {
     const response = await fetch(`${PATIENT_API}/${token}`);
     const data = await response.json();
-    if (response.ok) return data.patient;
+
+    if (response.ok) {
+      return data;
+    }
+
     return null;
   } catch (error) {
     console.error("Error fetching patient details:", error);
