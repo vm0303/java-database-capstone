@@ -15,15 +15,15 @@ import java.util.*;
 
 @Service
 public class AppointmentService {
-    @Autowired
+
     private final AppointmentRepository appointmentRepository;
-    @Autowired
+
     private final PatientRepository patientRepository;
-    @Autowired
+
     private final DoctorRepository doctorRepository;
-    @Autowired
+
     private final TokenService tokenService;
-    @Autowired
+
     private final com.project.back_end.services.Service service;
 
     public AppointmentService(
@@ -31,8 +31,7 @@ public class AppointmentService {
             PatientRepository patientRepository,
             DoctorRepository doctorRepository,
             TokenService tokenService,
-            com.project.back_end.services.Service service
-    ) {
+            com.project.back_end.services.Service service) {
         this.appointmentRepository = appointmentRepository;
         this.patientRepository = patientRepository;
         this.doctorRepository = doctorRepository;
@@ -61,10 +60,16 @@ public class AppointmentService {
             return ResponseEntity.badRequest().body(response);
         }
 
-        Map<String, String> errors = service.validateAppointment(appointment);
+        int validation = service.validateAppointment(appointment);
 
-        if (!errors.isEmpty()) {
-            return ResponseEntity.badRequest().body(errors);
+        if (validation == -1) {
+            response.put("message", "Doctor not found.");
+            return ResponseEntity.badRequest().body(response);
+        }
+
+        if (validation == 0) {
+            response.put("message", "Appointment time is not available.");
+            return ResponseEntity.badRequest().body(response);
         }
 
         appointmentRepository.save(appointment);
@@ -99,6 +104,21 @@ public class AppointmentService {
         return ResponseEntity.ok(response);
     }
 
+    @Transactional
+    public String changeStatus(Long appointmentId, int status) {
+        Optional<Appointment> appointmentOptional = appointmentRepository.findById(appointmentId);
+
+        if (appointmentOptional.isEmpty()) {
+            return "Appointment not found.";
+        }
+
+        Appointment appointment = appointmentOptional.get();
+        appointment.setStatus(status);
+        appointmentRepository.save(appointment);
+
+        return "Appointment status updated successfully.";
+    }
+
     @Transactional(readOnly = true)
     public Map<String, Object> getAppointment(String pname, LocalDate date, String token) {
         Map<String, Object> response = new HashMap<>();
@@ -114,15 +134,14 @@ public class AppointmentService {
             appointments = appointmentRepository.findByDoctorIdAndAppointmentTimeBetween(
                     doctorId,
                     start,
-                    end
-            );
+                    end);
         } else {
-            appointments = appointmentRepository.findByDoctorIdAndPatient_NameContainingIgnoreCaseAndAppointmentTimeBetween(
-                    doctorId,
-                    pname,
-                    start,
-                    end
-            );
+            appointments = appointmentRepository
+                    .findByDoctorIdAndPatient_NameContainingIgnoreCaseAndAppointmentTimeBetween(
+                            doctorId,
+                            pname,
+                            start,
+                            end);
         }
 
         List<AppointmentDTO> appointmentDTOs = new ArrayList<>();
@@ -146,7 +165,6 @@ public class AppointmentService {
                 appointment.getPatient().getPhone(),
                 appointment.getPatient().getAddress(),
                 appointment.getAppointmentTime(),
-                appointment.getStatus()
-        );
+                appointment.getStatus());
     }
 }

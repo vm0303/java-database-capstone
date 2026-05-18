@@ -12,7 +12,7 @@ import java.util.Map;
 
 @Service
 public class PrescriptionService {
-    @Autowired
+    
     private final PrescriptionRepository prescriptionRepository;
 
     public PrescriptionService(PrescriptionRepository prescriptionRepository) {

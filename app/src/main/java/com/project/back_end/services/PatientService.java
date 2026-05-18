@@ -13,11 +13,11 @@ import java.util.*;
 
 @Service
 public class PatientService {
-    @Autowired
+    
     private final PatientRepository patientRepository;
-    @Autowired
+    
     private final AppointmentRepository appointmentRepository;
-    @Autowired
+    
     private final TokenService tokenService;
 
     public PatientService(
@@ -44,8 +44,8 @@ public class PatientService {
     public ResponseEntity<Map<String, Object>> getPatientAppointment(Long id, String token) {
         Map<String, Object> response = new HashMap<>();
 
-        String email = tokenService.extractEmail(token);
-        Patient patient = patientRepository.findByEmail(email);
+        Long tokenPatientId = tokenService.getIdFromToken(token);
+Patient patient = patientRepository.findById(tokenPatientId).orElse(null);
 
         if (patient == null || !patient.getId().equals(id)) {
             response.put("message", "Unauthorized access.");
@@ -121,8 +121,8 @@ public class PatientService {
     public ResponseEntity<Map<String, Object>> getPatientDetails(String token) {
         Map<String, Object> response = new HashMap<>();
 
-        String email = tokenService.extractEmail(token);
-        Patient patient = patientRepository.findByEmail(email);
+        Long patientId = tokenService.getIdFromToken(token);
+Patient patient = patientRepository.findById(patientId).orElse(null);
 
         if (patient == null) {
             response.put("message", "Patient not found.");

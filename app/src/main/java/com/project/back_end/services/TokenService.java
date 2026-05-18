@@ -3,6 +3,7 @@ package com.project.back_end.services;
 import com.project.back_end.repo.AdminRepository;
 import com.project.back_end.repo.DoctorRepository;
 import com.project.back_end.repo.PatientRepository;
+import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
 import org.springframework.beans.factory.annotation.Value;
@@ -21,6 +22,9 @@ public class TokenService {
     @Value("${jwt.secret}")
     private String jwtSecret;
 
+    @Value("${jwt.expiration:604800000}")
+    private long jwtExpiration;
+
     public TokenService(
             AdminRepository adminRepository,
             DoctorRepository doctorRepository,
@@ -35,40 +39,41 @@ public class TokenService {
         return Keys.hmacShaKeyFor(jwtSecret.getBytes());
     }
 
-    public String generateToken(String identifier) {
-        long sevenDays = 1000L * 60 * 60 * 24 * 7;
-
+    public String generateToken(Long id, String role) {
         return Jwts.builder()
-                .subject(identifier)
+                .subject(String.valueOf(id))
+                .claim("role", role)
                 .issuedAt(new Date())
-                .expiration(new Date(System.currentTimeMillis() + sevenDays))
+                .expiration(new Date(System.currentTimeMillis() + jwtExpiration))
                 .signWith(getSigningKey())
                 .compact();
     }
 
-    public String extractIdentifier(String token) {
-        return Jwts.parser()
-                .verifyWith(getSigningKey())
-                .build()
-                .parseSignedClaims(token)
-                .getPayload()
-                .getSubject();
+    public Long getIdFromToken(String token) {
+        return Long.parseLong(getClaims(token).getSubject());
     }
 
     public boolean validateToken(String token, String user) {
         try {
-            String identifier = extractIdentifier(token);
+            Claims claims = getClaims(token);
+
+            String role = claims.get("role", String.class);
+            Long id = Long.parseLong(claims.getSubject());
+
+            if (role == null || !role.equalsIgnoreCase(user)) {
+                return false;
+            }
 
             if (user.equalsIgnoreCase("admin")) {
-                return adminRepository.findByUsername(identifier) != null;
+                return adminRepository.existsById(id);
             }
 
             if (user.equalsIgnoreCase("doctor")) {
-                return doctorRepository.findByEmail(identifier) != null;
+                return doctorRepository.existsById(id);
             }
 
             if (user.equalsIgnoreCase("patient")) {
-                return patientRepository.findByEmail(identifier) != null;
+                return patientRepository.existsById(id);
             }
 
             return false;
@@ -76,5 +81,13 @@ public class TokenService {
         } catch (Exception e) {
             return false;
         }
+    }
+
+    private Claims getClaims(String token) {
+        return Jwts.parser()
+                .verifyWith(getSigningKey())
+                .build()
+                .parseSignedClaims(token)
+                .getPayload();
     }
 }
