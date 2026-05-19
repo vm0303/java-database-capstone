@@ -72,7 +72,6 @@ function renderDoctorCards(doctors) {
         contentDiv.appendChild(card);
     });
 }
-
 window.adminAddDoctor = async function () {
     const token = localStorage.getItem("token");
 
@@ -83,12 +82,12 @@ window.adminAddDoctor = async function () {
     }
 
     const name = document.getElementById("doctorName")?.value;
-    const specialty = document.getElementById("doctorSpecialty")?.value;
+    const specialty = document.getElementById("specialization")?.value;
     const email = document.getElementById("doctorEmail")?.value;
     const password = document.getElementById("doctorPassword")?.value;
     const phone = document.getElementById("doctorPhone")?.value;
 
-    const checkedTimes = document.querySelectorAll("input[name='availableTimes']:checked");
+    const checkedTimes = document.querySelectorAll("input[name='availability']:checked");
     const availableTimes = Array.from(checkedTimes).map(function (checkbox) {
         return checkbox.value;
     });
@@ -107,11 +106,7 @@ window.adminAddDoctor = async function () {
 
         if (result.success) {
             alert(result.message || "Doctor added successfully.");
-            const modal = document.getElementById("modal");
-            if (modal) {
-                modal.classList.remove("show");
-                modal.classList.add("hidden");
-            }
+            document.getElementById("modal").style.display = "none";
             loadDoctorCards();
         } else {
             alert(result.message || "Could not add doctor.");

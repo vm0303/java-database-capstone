@@ -48,7 +48,7 @@
             <div class="filter-section">
 
                 <!-- Sort By Time -->
-                <select id="timeFilter">
+                <select id="filterTime">
                     <option value="">Sort By Time</option>
                     <option value="morning">Morning</option>
                     <option value="afternoon">Afternoon</option>
@@ -56,7 +56,7 @@
                 </select>
 
                 <!-- Filter By Specialty -->
-                <select id="specialtyFilter">
+                <select id="filterSpecialty">
                     <option value="">Filter By Specialty</option>
                     <option value="Cardiology">Cardiology</option>
                     <option value="Dermatology">Dermatology</option>
@@ -92,9 +92,6 @@
 <!-- Page Scripts -->
 <script type="module" th:src="@{/js/adminDashboard.js}" defer></script>
 
-<!-- <script type="module"
-        src="../js/components/doctorCard.js"
-        defer></script> -->
 
 </body>
 </html>
