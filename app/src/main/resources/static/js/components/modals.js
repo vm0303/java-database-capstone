@@ -80,25 +80,33 @@ export function openModal(type) {
     };
 
     if (type === "patientSignup") {
-        document.getElementById("signupBtn").addEventListener("click", signupPatient);
+        document.getElementById("signupBtn").addEventListener("click", function () {
+            window.signupPatient();
+        });
     }
-
+    
     if (type === "patientLogin") {
-        document.getElementById("loginBtn").addEventListener("click", loginPatient);
+        document.getElementById("loginBtn").addEventListener("click", function () {
+            window.loginPatient();
+        });
     }
-
-    if (type === 'addDoctor') {
-        document.getElementById('saveDoctorBtn').addEventListener('click', function () {
+    
+    if (type === "addDoctor") {
+        document.getElementById("saveDoctorBtn").addEventListener("click", function () {
             window.adminAddDoctor();
         });
     }
-
-    if (type === 'adminLogin') {
-        document.getElementById('adminLoginBtn').addEventListener('click', adminLoginHandler);
+    
+    if (type === "adminLogin") {
+        document.getElementById("adminLoginBtn").addEventListener("click", function () {
+            window.adminLoginHandler();
+        });
     }
-
-    if (type === 'doctorLogin') {
-        document.getElementById('doctorLoginBtn').addEventListener('click', doctorLoginHandler);
+    
+    if (type === "doctorLogin") {
+        document.getElementById("doctorLoginBtn").addEventListener("click", function () {
+            window.doctorLoginHandler();
+        });
     }
 }
 

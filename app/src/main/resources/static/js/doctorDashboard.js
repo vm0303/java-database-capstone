@@ -92,7 +92,7 @@ async function loadAppointments() {
                 email: appointment.patientEmail
             };
 
-            const row = createPatientRow(patient, appointment);
+            const row = createPatientRow(patient, appointment.id, appointment.doctorId);
             tableBody.appendChild(row);
         });
 
