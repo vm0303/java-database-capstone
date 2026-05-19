@@ -190,34 +190,52 @@ public class DoctorService {
     }
 
     @Transactional(readOnly = true)
-    public Map<String, Object> filterDoctorsByTime(String amOrPm) {
-        List<Doctor> doctors = doctorRepository.findAll();
+public Map<String, Object> filterDoctorsByTime(String amOrPm) {
+    List<Doctor> doctors = doctorRepository.findAll();
+    return doctorMap(filterDoctorByTime(doctors, amOrPm));
+}
 
-        return doctorMap(filterDoctorByTime(doctors, amOrPm));
-    }
+
+
+
+
 
     private List<Doctor> filterDoctorByTime(List<Doctor> doctors, String amOrPm) {
-        if (amOrPm == null || amOrPm.isBlank() || amOrPm.equalsIgnoreCase("null")) {
-            return doctors;
+    if (amOrPm == null || amOrPm.isBlank() || amOrPm.equalsIgnoreCase("null")) {
+        return doctors;
+    }
+
+    String filter = amOrPm.trim().toUpperCase();
+
+    List<Doctor> filteredDoctors = new ArrayList<>();
+
+    for (Doctor doctor : doctors) {
+        if (doctor.getAvailableTimes() == null) {
+            continue;
         }
 
-        List<Doctor> filteredDoctors = new ArrayList<>();
+        for (String slot : doctor.getAvailableTimes()) {
+            try {
+                String startTimeText = slot.split("-")[0].trim();
 
-        for (Doctor doctor : doctors) {
-            if (doctor.getAvailableTimes() == null) {
-                continue;
-            }
+                int hour = Integer.parseInt(startTimeText.split(":")[0]);
 
-            for (String slot : doctor.getAvailableTimes()) {
-                if (slot.toUpperCase().contains(amOrPm.toUpperCase())) {
+                boolean isAM = hour < 12;
+                boolean isPM = hour >= 12;
+
+                if ((filter.equals("AM") && isAM) || (filter.equals("PM") && isPM)) {
                     filteredDoctors.add(doctor);
                     break;
                 }
+
+            } catch (Exception e) {
+                System.out.println("Invalid time slot format: " + slot);
             }
         }
-
-        return filteredDoctors;
     }
+
+    return filteredDoctors;
+}
 
     private Map<String, Object> doctorMap(List<Doctor> doctors) {
         Map<String, Object> response = new HashMap<>();
