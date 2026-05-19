@@ -1,6 +1,6 @@
-import { openModal } from "../components/modals.js";
-import { getDoctors, filterDoctors, saveDoctor } from "../services/doctorServices.js";
-import { createDoctorCard } from "../components/doctorCard.js";
+import { openModal } from "./components/modals.js";
+import { getDoctors, filterDoctors, saveDoctor } from "./services/doctorServices.js";
+import { createDoctorCard } from "./components/doctorCard.js";
 
 document.addEventListener("DOMContentLoaded", function () {
     const addDocBtn = document.getElementById("addDocBtn");

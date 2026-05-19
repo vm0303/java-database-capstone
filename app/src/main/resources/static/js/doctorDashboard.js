@@ -1,6 +1,5 @@
-import { getAllAppointments } from "../services/appointmentRecordService.js";
-import { createPatientRow } from "../components/patientRows.js";
-
+import { getAllAppointments } from "./services/appointmentRecordService.js";
+import { createPatientRow } from "./components/patientRows.js";
 let tableBody;
 let selectedDate = new Date().toISOString().split("T")[0];
 let token = localStorage.getItem("token");

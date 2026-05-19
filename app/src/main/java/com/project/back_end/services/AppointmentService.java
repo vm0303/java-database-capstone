@@ -82,6 +82,32 @@ public class AppointmentService {
     }
 
     @Transactional
+public ResponseEntity<Map<String, String>> cancelAppointment(long id, String token) {
+    Map<String, String> response = new HashMap<>();
+
+    Optional<Appointment> appointmentOptional = appointmentRepository.findById(id);
+
+    if (appointmentOptional.isEmpty()) {
+        response.put("message", "Appointment not found.");
+        return ResponseEntity.badRequest().body(response);
+    }
+
+    Appointment appointment = appointmentOptional.get();
+
+    Long patientId = tokenService.getIdFromToken(token);
+
+    if (!appointment.getPatient().getId().equals(patientId)) {
+        response.put("message", "You are not allowed to cancel this appointment.");
+        return ResponseEntity.status(403).body(response);
+    }
+
+    appointmentRepository.delete(appointment);
+
+    response.put("message", "Appointment cancelled successfully.");
+    return ResponseEntity.ok(response);
+}
+
+    @Transactional
     public String changeStatus(Long appointmentId, int status) {
 
         Optional<Appointment> appointmentOptional =
